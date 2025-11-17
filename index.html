@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mahidol Medical Service</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="toast-bin"></div>
+    <nav id="navbar" class="nav hidden">
+        <div class="nav-b">
+            <span class="nav-ico">🏥</span>
+            <div id="n-box" class="nav-txt"><span id="n-wel">Medical Service</span></div>
+        </div>
+        <div class="nav-u"><span id="n-hn" class="hn">HN -</span><button class="lout" onclick="logout()">Logout</button></div>
+    </nav>
+
+    <div class="cnt">
+        <div id="auth-layer">
+            <div id="login-view" style="width:100%;max-width:400px;margin:0 auto;text-align:center;">
+                <div style="margin-bottom:30px;">
+                    <div style="font-size:4rem;margin-bottom:10px;">🏥</div>
+                    <h1 style="margin:0;font-size:2rem;color:var(--txt);">ลงชื่อเข้าใช้</h1>
+                    <p style="margin:10px 0 0;color:var(--txt-s);">ระบบบริการทางการแพทย์</p>
+                </div>
+                <div class="ig"><input type="tel" id="nid" class="ip no" placeholder="เลขบัตรประชาชน 13 หลัก" maxlength="13" style="background:#fff;"></div>
+                <div class="ig"><input type="password" id="pass" class="ip" placeholder="รหัสผ่าน" style="background:#fff;"></div>
+                <div style="display:flex; justify-content:flex-end; margin-bottom:20px; margin-top:-5px;">
+                    <button class="t-btn" onclick="nav('forgot-view')">ลืมรหัสผ่าน?</button>
+                </div>
+                <button class="btn bp" id="b-log" onclick="doLog()">เข้าสู่ระบบ <div class="load"></div></button>
+                <div style="margin-top:20px;"><button class="t-btn" onclick="nav('register-view')">สร้างบัญชีใหม่</button></div>
+            </div>
+            
+            <div id="register-view" style="width:100%;max-width:400px;margin:0 auto;text-align:center;" class="hidden">
+                <div style="margin-bottom:30px;">
+                    <h1 style="margin:0;font-size:2rem;color:var(--txt);">สร้างบัญชี</h1>
+                </div>
+                <div class="ig"><input type="tel" id="rn" class="ip no" placeholder="เลขบัตร 13 หลัก" maxlength="13" style="background:#fff;"></div>
+                <div class="ig"><input type="text" id="ru" class="ip" placeholder="ชื่อ-สกุล" style="background:#fff;"></div>
+                <div class="ig"><input type="password" id="rp" class="ip" placeholder="รหัสผ่าน" style="background:#fff;"></div>
+                <button class="btn bp" id="b-reg" onclick="doRegister()">ลงทะเบียน <div class="load"></div></button>
+                <div style="margin-top:20px;"><button class="t-btn" onclick="nav('login-view')">กลับ</button></div>
+            </div>
+
+            <div id="forgot-view" style="width:100%;max-width:400px;margin:0 auto;text-align:center;" class="hidden">
+                <div style="margin-bottom:30px;">
+                    <h2 style="margin:0;font-size:2rem;color:var(--txt);">ลืมรหัสผ่าน</h2>
+                </div>
+                <div class="ig"><input type="tel" id="fn" class="ip no" placeholder="เลขบัตร 13 หลัก" style="background:#fff;"></div>
+                <button class="btn bp" id="b-fog" onclick="doForgot()">ค้นหา <div class="load"></div></button>
+                <div style="margin-top:20px;"><button class="t-btn" onclick="nav('login-view')">ยกเลิก</button></div>
+            </div>
+        </div>
+
+        <div id="dashboard-layer" class="grid hidden">
+            <div class="dc"><div class="ico"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div><h2>นัดหมายของคุณ</h2><div id="ls-appt" class="al"><div style="color:var(--txt-s);">กำลังโหลด...</div></div></div>
+            <div class="dc"><div class="ico" style="background:#E3F2FD;color:var(--blue);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg></div><h2>จองคิวแพทย์</h2><p>ระบบนัดหมายตรวจรักษาแผนกผิวหนัง</p><button class="btn bp" style="margin-top:auto;" onclick="opAppt()">จองคิวทันที</button></div>
+            <div class="dc"><div class="ico" style="background:#FFF3E0;color:var(--gold);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><h2>ข้อมูลส่วนตัว</h2><p>จัดการข้อมูลเวชระเบียนและประวัติส่วนตัว</p><button class="btn bp" style="margin-top:auto;" onclick="opProf()">แก้ไขข้อมูล</button></div>
+        </div>
+    </div>
+
+    <div id="m-man" class="mod"><div class="mb">
+        <h2>จัดการนัดหมาย</h2><p id="mn-det" style="color:var(--txt-s);margin-bottom:20px;"></p>
+        <div id="mv-main" style="display:grid;gap:10px;"><button class="btn bp" onclick="toRe()">เลื่อนนัด</button><button class="btn bd" onclick="toCan1()">ยกเลิกนัด</button><button class="btn bs" onclick="cl('m-man')">ปิด</button></div>
+        <div id="mv-re" class="hidden"><div class="ig"><span class="lb">วันที่ใหม่</span><input type="date" id="r-da" class="ip"></div><div class="ig"><span class="lb">เวลาใหม่</span><select id="r-ti" class="ip"><option value="" disabled selected></option><option>09:00-10:00</option><option>10:00-11:00</option><option>11:00-12:00</option><option>13:00-14:00</option><option>14:00-15:00</option><option>15:00-16:00</option></select></div><div class="g2"><button class="btn bs" onclick="toMain()">กลับ</button><button class="btn bp" id="b-res" onclick="doRes()">ยืนยัน <div class="load"></div></button></div></div>
+        <div id="mv-c1" class="hidden"><p>ต้องการยกเลิกนัดหมายนี้?</p><div class="g2"><button class="btn bs" onclick="toMain()">ไม่</button><button class="btn bd" onclick="toCan2()">ใช่</button></div></div>
+        <div id="mv-c2" class="hidden"><p style="color:var(--red);">ยืนยันการลบข้อมูลถาวร?</p><div class="g2"><button class="btn bs" onclick="toMain()">ยกเลิก</button><button class="btn bd" id="b-can" onclick="doCan()">ยืนยัน <div class="load"></div></button></div></div>
+    </div></div>
+
+    <div id="m-pdpa" class="mod"><div class="mb">
+        <h3>หนังสือขอความยินยอม<br>ในการเก็บรวบรวม ใช้ และเปิดเผยข้อมูลส่วนบุคคล</h3>
+        <div class="pdpa">
+            <p>เพื่อให้เป็นไปตาม <strong>พระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)</strong> ระบบบริการทางการแพทย์ (Mahidol Medical Service) ตระหนักถึงความสำคัญของการคุ้มครองข้อมูลส่วนบุคคลของท่าน จึงขอแจ้งรายละเอียดและขอความยินยอมดังนี้:</p>
+            <p><strong>1. วัตถุประสงค์การเก็บรวบรวมข้อมูล</strong><br>
+            ข้าพเจ้ายินยอมให้เก็บรวบรวมข้อมูลส่วนบุคคล (เช่น ชื่อ-สกุล, วันเกิด, ข้อมูลสุขภาพ) เพื่อใช้ในการตรวจสอบสิทธิการรักษา, การวินิจฉัยโรค, การนัดหมายแพทย์, และการให้บริการทางการแพทย์ที่เกี่ยวข้อง</p>
+            <p><strong>2. การเปิดเผยและส่งต่อข้อมูล</strong><br>
+            ข้อมูลของท่านจะถูกเก็บรักษาเป็นความลับ และอาจถูกเปิดเผยต่อบุคลากรทางการแพทย์ที่เกี่ยวข้องเพื่อประโยชน์ในการรักษาพยาบาลของท่านเท่านั้น</p>
+            <p><strong>3. สิทธิของเจ้าของข้อมูล</strong><br>
+            ท่านมีสิทธิในการเข้าถึง, แก้ไข, ลบ, หรือเพิกถอนความยินยอมข้อมูลส่วนบุคคลของท่านได้ตามที่กฎหมายกำหนด โดยติดต่อเจ้าหน้าที่เวชระเบียน</p>
+            <p style="font-size:0.8rem;color:var(--txt-s);margin-top:10px;">*การกด "ข้าพเจ้ายินยอม" ถือว่าท่านได้รับทราบและเข้าใจรายละเอียดข้างต้นครบถ้วนแล้ว</p>
+        </div>
+        <button class="btn bp" id="b-pdpa" onclick="okPDPA()">ข้าพเจ้ายินยอม <div class="load"></div></button>
+    </div></div>
+
+    <div id="m-appt" class="mod"><div class="mb"><h2>นัดหมายแพทย์</h2><div class="ig"><span class="lb">อาการ</span><select id="a-sy" class="ip"><option value="" disabled selected></option><option>สิว</option><option>ผื่นคัน</option><option>ไฝ/ติ่งเนื้อ</option><option>ฝ้า/กระ</option><option>ผมร่วง</option><option>เลเซอร์</option><option>อื่นๆ</option></select></div><div class="ig"><span class="lb">วันที่</span><input type="date" id="a-da" class="ip"></div><div class="ig"><span class="lb">เวลา</span><select id="a-ti" class="ip"><option value="" disabled selected></option><option>09:00-10:00</option><option>10:00-11:00</option><option>11:00-12:00</option><option>13:00-14:00</option><option>14:00-15:00</option><option>15:00-16:00</option></select></div><div class="g2"><button class="btn bs" onclick="cl('m-appt')">ปิด</button><button class="btn bp" id="b-apt" onclick="saveAppt()">ยืนยัน <div class="load"></div></button></div></div></div>
+
+    <div id="m-prof" class="mod"><div class="mb" style="max-width:650px;"><h2>ข้อมูลเวชระเบียน</h2>
+        <div class="sec-head">ส่วนตัว</div>
+        <div class="g3"><div class="ig"><span class="lb">คำนำหน้า*</span><input id="pf-ti" class="ip"></div><div class="ig"><span class="lb">ชื่อ*</span><input id="pf-fi" class="ip"></div><div class="ig"><span class="lb">สกุล*</span><input id="pf-la" class="ip"></div></div><div class="g2"><div class="ig"><span class="lb">วันเกิด*</span><input type="date" id="pf-do" class="ip" onchange="calAge()"></div><div class="ig"><span class="lb">อายุ</span><input type="number" id="pf-ag" class="ip ro" readonly></div></div><div class="g2"><div class="ig"><span class="lb">เพศ*</span><select id="pf-ge" class="ip"><option value="" disabled selected></option><option>ชาย</option><option>หญิง</option></select></div><div class="ig"><span class="lb">สถานภาพ*</span><select id="pf-ma" class="ip"><option value="" disabled selected></option><option>โสด</option><option>สมรส</option><option>หย่าร้าง</option></select></div></div><div class="g3"><div class="ig"><span class="lb">เชื้อชาติ*</span><input id="pf-na" class="ip"></div><div class="ig"><span class="lb">ศาสนา*</span><input id="pf-re" class="ip"></div><div class="ig"><span class="lb">อาชีพ*</span><input id="pf-oc" class="ip"></div></div>
+        <div class="sec-head">ติดต่อ</div>
+        <div class="ig"><span class="lb">เบอร์โทร (10 หลัก)*</span><input type="tel" id="pf-ph" class="ip no" maxlength="10"></div><div class="ig"><span class="lb">ที่อยู่*</span><textarea id="pf-ad" class="ip" rows="2" style="height:auto;padding-top:14px;"></textarea></div>
+        <div class="sec-head">สุขภาพ</div>
+        <div class="g3"><div class="ig"><span class="lb">หมู่เลือด*</span><select id="pf-bl" class="ip"><option value="" disabled selected></option><option>AB</option><option>A</option><option>B</option><option>O</option></select></div><div class="ig"><span class="lb">น้ำหนัก*</span><input type="number" id="pf-we" class="ip"></div><div class="ig"><span class="lb">ส่วนสูง*</span><input type="number" id="pf-he" class="ip"></div></div><div class="ig"><span class="lb">โรคประจำตัว (ไม่มีขีด -)*</span><input id="pf-di" class="ip"></div>
+        <div class="sec-head">ฉุกเฉิน</div>
+        <div class="g2"><div class="ig"><span class="lb">ชื่อ-สกุล*</span><input id="pf-en" class="ip"></div><div class="ig"><span class="lb">ความสัมพันธ์*</span><input id="pf-er" class="ip"></div></div><div class="ig"><span class="lb">เบอร์ฉุกเฉิน*</span><input type="tel" id="pf-ep" class="ip no" maxlength="10"></div>
+        <div class="g2" style="margin-top:20px;"><button class="btn bs" id="b-c-pr" onclick="cl('m-prof')">ยกเลิก</button><button class="btn bp" id="b-sav" onclick="saveProf()">บันทึก <div class="load"></div></button></div>
+    </div></div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
